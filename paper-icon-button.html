@@ -15,7 +15,7 @@ Example:
 
     <paper-icon-button iconSrc="star.png"></paper-icon-button>
 
-`paper-icon-button` includes a default icon set.  Use `icon` to specify 
+`paper-icon-button` includes a default icon set.  Use `icon` to specify
 which icon from the icon set to use.
 
 Example:
@@ -38,50 +38,63 @@ See `core-iconset` for more information about how to use a custom icon set.
 <link href="../core-icon/core-icon.html" rel="import">
 <link href="../paper-button/paper-button.html" rel="import">
 
-<polymer-element name="paper-icon-button" extends="paper-button" attributes="fill">
+<polymer-element name="paper-icon-button" attributes="src icon fill">
 
   <template>
 
     <link href="paper-icon-button.css" rel="stylesheet">
 
-    <shadow></shadow>
+    <paper-button id="button" recenteringTouch fill="{{fill}}">
+      <core-icon id="icon" icon="{{icon}}" src="{{src}}"></core-icon>
+    </paper-button>
 
   </template>
 
   <script>
-  
+
     Polymer('paper-icon-button', {
 
       publish: {
 
         /**
-         * If true, the ripple expands to a square to fill the containing box.
+         * The URL of an image for the icon. If the src property is specified,
+         * the icon property should not be.
+         *
+         * @attribute src
+         * @type string
+         * @default ''
+         */
+         src: '',
+
+        /**
+         * Specifies the icon name or index in the set of icons available in
+         * the icon's icon set. If the icon property is specified,
+         * the src property should not be.
+         *
+         * @attribute icon
+         * @type string
+         * @default ''
+         */
+        icon: '',
+
+        /**
+         * By default the ripple expands to a circle around the icon. Set this to
+         * true if you want the ripple to fill the containing box.
          *
          * @attribute fill
          * @type boolean
          * @default false
          */
-        fill: {value: false, reflect: true}
+        fill: false
 
-      },
-
-      ready: function() {
-        this.$.ripple.classList.add('recenteringTouch');
-        this.fillChanged();
-      },
-
-      fillChanged: function() {
-        this.$.ripple.classList.toggle('circle', !this.fill);
       },
 
       iconChanged: function(oldIcon) {
-        if (!this.label) {
-          this.setAttribute('aria-label', this.icon);
-        }
+        this.setAttribute('aria-label', this.icon);
       }
 
     });
-    
+
   </script>
-  
+
 </polymer-element>

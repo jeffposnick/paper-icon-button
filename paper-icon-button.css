@@ -5,13 +5,16 @@ license that can be found in the LICENSE file.
 */
 
 :host([disabled]) {
-  background: none !important;
+  pointer-events: none;
 }
 
 :host([disabled]) /deep/ #icon {
   fill: #c9c9c9;
 }
 
-:host(:not([fill])) /deep/ #focusBg {
-  border-radius: 50%;
+#button {
+  min-width: 0;
+  margin: 0;
+  padding: 8px;
+  border-radius: 0;
 }
