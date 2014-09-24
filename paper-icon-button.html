@@ -35,24 +35,51 @@ See `core-iconset` for more information about how to use a custom icon set.
 @homepage github.io
 -->
 
+<link href="../polymer/polymer.html" rel="import">
 <link href="../core-icon/core-icon.html" rel="import">
-<link href="../paper-button/paper-button.html" rel="import">
+<link href="../paper-button/paper-button-base.html" rel="import">
+<link href="../paper-ripple/paper-ripple.html" rel="import">
+<link href="../paper-shadow/paper-shadow.html" rel="import">
 
-<polymer-element name="paper-icon-button" attributes="src icon fill">
+<polymer-element name="paper-icon-button" extends="paper-button-base" attributes="src icon fill raised">
 
   <template>
 
-    <link href="paper-icon-button.css" rel="stylesheet">
+    <style>
+      :host {
+        display: inline-block;
+        position: relative;
+        padding: 8px;
+        outline: none;
+        -webkit-user-select: none;
+        user-select: none;
+        cursor: pointer;
+        z-index: 0;
+      }
 
-    <paper-button id="button" recenteringTouch fill="{{fill}}">
-      <core-icon id="icon" icon="{{icon}}" src="{{src}}"></core-icon>
-    </paper-button>
+      :host([disabled]) {
+        color: #c9c9c9;
+        pointer-events: none;
+        cursor: auto;
+      }
+
+      #ripple {
+        pointer-events: none;
+        z-index: -1;
+      }
+    </style>
+
+    <template if="{{raised}}">
+      <paper-shadow id="shadow" z="{{z}}" animated></paper-shadow>
+    </template>
+
+    <!-- to position to ripple behind the icon -->
+    <core-icon relative id="icon" src="{{src}}" icon="{{icon}}">
 
   </template>
 
   <script>
-
-    Polymer('paper-icon-button', {
+    Polymer({
 
       publish: {
 
@@ -64,7 +91,7 @@ See `core-iconset` for more information about how to use a custom icon set.
          * @type string
          * @default ''
          */
-         src: '',
+        src: '',
 
         /**
          * Specifies the icon name or index in the set of icons available in
@@ -78,8 +105,27 @@ See `core-iconset` for more information about how to use a custom icon set.
         icon: '',
 
         /**
-         * By default the ripple expands to a circle around the icon. Set this to
-         * true if you want the ripple to fill the containing box.
+         * If true, the button will be styled as a "raised" button.
+         *
+         * @attribute raised
+         * @type boolean
+         * @default false
+         */
+        raised: false,
+
+        /**
+         * By default the ripple emanates from the center of the button.
+         * Set this to false to make it ripple from the touch.
+         *
+         * @attribute recenteringTouch
+         * @type boolean
+         * @default true
+         */
+        recenteringTouch: true,
+
+        /**
+         * By default the ripple expands to a circle within the containing box. Set
+         * this to true to make the ripple fill the containing box.
          *
          * @attribute fill
          * @type boolean
